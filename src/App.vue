@@ -59,6 +59,6 @@ const cadastraTarefa = (e) => { // função para cadastrar nova tarefa
   <div class="container">
     <Cabecalho :tarefas-pendentes="getTarefasPendentes().length" /> <!-- passa o número de tarefas pendentes como prop -->
     <Formulario :trocar-filtro="evento => estado.filtro = evento.target.value" :tarefa-temp="estado.tarefaTemp" :edita-tarefa-temp="evento => estado.tarefaTemp = evento.target.value" :cadastra-tarefa="cadastraTarefa" /> <!-- passa as funções e dados necessários como props -->
-    <ListaDeTarefas :tarefas="getTarefasFiltradas()" /> <!-- passa a lista de tarefas filtradas como prop -->
+    <ListaDeTarefas :tarefas="getTarefasFiltradas()" :filtro="estado.filtro" /> <!-- passa a lista de tarefas filtradas como prop -->
   </div>
 </template>
