@@ -1,5 +1,8 @@
 <script setup>
-import { reactive } from 'vue';
+  import { reactive } from 'vue';
+  import Cabecalho from './components/Cabecalho.vue';
+  import Formulario from './components/Formulario.vue';
+  import ListaDeTarefas from './components/ListaDeTarefas.vue';
 
 const estado = reactive({
   filtro: 'todas',
@@ -54,42 +57,8 @@ const cadastraTarefa = (e) => { // função para cadastrar nova tarefa
 
 <template>
   <div class="container">
-    <header class="p-5 mb-4 mt-4 bg-light rounded-3">
-      <h1>To Do List</h1>
-      <p>
-        Você tem {{ getTarefasPendentes().length }} tarefas pendentes. <!-- exibe o número de tarefas pendentes -->
-      </p>
-    </header>
-    <form @submit="cadastraTarefa">
-      <div class="row">
-        <div class="col">
-          <input :value="estado.tarefaTemp" @input="evento => estado.tarefaTemp = evento.target.value" required type="text" class="form-control" placeholder="Digite a descrição da tarefa">
-        </div>
-          <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
-          </div>
-          <div class="col-md-2">
-            <select @change="evento => estado.filtro = evento.target.value" class="form-control">
-              <option value="todas">Todas tarefas</option>
-              <option value="pendentes">Pendentes</option>
-              <option value="finalizadas">Finalizadas</option>
-            </select>
-          </div>
-      </div>
-    </form>
-    <ul class="list-group mt-4">
-      <li class="list-group-item" v-for="tarefa in getTarefasFiltradas()"> <!-- itera sobre a lista de tarefas -->
-        <input @change="evento => tarefa.finalizada = evento.target.checked" :checked="tarefa.finalizada" :id="tarefa.titulo" type="checkbox"> <!-- vincula o estado da checkbox ao atributo finalizada -->
-        <label :class="{ done: tarefa.finalizada}" class="ms-3" :for="tarefa.titulo">
-          {{tarefa.titulo}} <!-- exibe o título da tarefa -->
-        </label>
-      </li>
-    </ul>
+    <Cabecalho :tarefas-pendentes="getTarefasPendentes().length" /> <!-- passa o número de tarefas pendentes como prop -->
+    <Formulario :trocar-filtro="evento => estado.filtro = evento.target.value" :tarefa-temp="estado.tarefaTemp" :edita-tarefa-temp="evento => estado.tarefaTemp = evento.target.value" :cadastra-tarefa="cadastraTarefa" /> <!-- passa as funções e dados necessários como props -->
+    <ListaDeTarefas :tarefas="getTarefasFiltradas()" /> <!-- passa a lista de tarefas filtradas como prop -->
   </div>
 </template>
-
-<style scoped>
-  .done {
-    text-decoration: line-through;
-  }
-</style>
